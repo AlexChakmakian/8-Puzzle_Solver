@@ -71,7 +71,7 @@ class PuzzleSolver:
             current = current.parent
         return path[::-1]
     
-    def bfs(self):
+    def bfs(self): #the breadth-first serch algorithm
         start_time = time.time()
         queue = deque([self.initial_state])
         visited = set([str(self.initial_state.board)])
@@ -90,7 +90,7 @@ class PuzzleSolver:
         
         return {'solution': None, 'time_taken': time.time() - start_time}
     
-    def dfs(self, max_depth=20):
+    def dfs(self, max_depth=20): # the depth-first search algorithm
         start_time = time.time()
         stack = [(self.initial_state, set([str(self.initial_state.board)]))]
         
@@ -110,7 +110,7 @@ class PuzzleSolver:
         
         return {'solution': None, 'time_taken': time.time() - start_time}
     
-    def ids(self, max_depth=30):
+    def ids(self, max_depth=30): #the iterative deepening search algorithm
         start_time = time.time()
         for depth in range(max_depth):
             stack = [(self.initial_state, set([str(self.initial_state.board)]))]
@@ -130,7 +130,7 @@ class PuzzleSolver:
         
         return {'solution': None, 'time_taken': time.time() - start_time}
     
-    def a_star(self):
+    def a_star(self): #the a* search algorithm
         start_time = time.time()
         self.initial_state.h = self.initial_state.calculate_manhattan_distance()
         self.initial_state.f = self.initial_state.g + self.initial_state.h
@@ -158,7 +158,7 @@ class PuzzleSolver:
         
         return {'solution': None, 'time_taken': time.time() - start_time}
     
-    def greedy(self):
+    def greedy(self): #the greedy search algorithm
         start_time = time.time()
         self.initial_state.h = self.initial_state.calculate_misplaced_tiles()
         self.initial_state.f = self.initial_state.h
@@ -194,7 +194,7 @@ def solve_puzzle(board, algorithm):
     elif algorithm == 'A*': return solver.a_star()
     else: raise ValueError(f"Unknown algorithm: {algorithm}")
 
-class PuzzleGUI:
+class PuzzleGUI: #the GUI for the 8-puzzle solver
     def __init__(self, root):
         self.root = root
         self.root.title("8-Puzzle Solver")
@@ -370,8 +370,8 @@ class PuzzleGUI:
             
             self.status_label.config(text=f"Solution found! {len(result['solution'])} steps, click 'Step' to visualize.")
         else:
-            self.status_label.config(text=f"{algorithm} could not find a solution")
-            messagebox.showerror("Error", "Could not find a solution for this puzzle.")
+            self.status_label.config(text=f"{algorithm} Already solved/could not find a solution")
+            messagebox.showerror("Error", "Already solved/could not find a solution for this puzzle.")
             
     def step_solution(self):
         if not self.solution or self.solution_index >= len(self.solution):
@@ -432,7 +432,7 @@ def main():
                     print(f"Moves: {result['solution']}")
                     print(f"Time taken: {result['time_taken']:.5f} seconds")
                 else:
-                    print(f"{algo} could not find a solution")
+                    print(f"{algo} already solved or could not find a solution")
     else:
         root = tk.Tk()
         app = PuzzleGUI(root)
